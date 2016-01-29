@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "reader.h"
 #include "charcode.h"
@@ -23,18 +24,100 @@ extern CharCode charCodes[];
 
 void skipBlank() {
   // TODO
+  readChar();
 }
 
 void skipComment() {
   // TODO
+	CharCode char1, char2;
+	char1 = CHAR_TIMES;
+	char2 = charCodes[currentChar];
+	while (char1 != CHAR_TIMES || char2 != CHAR_RPAR){
+		readChar();
+		char1 = char2;
+		char2 = charCodes[currentChar];
+	}
+	readChar();
+}
+
+void skipTK_NONE(void){
+	while (charCodes[currentChar] == CHAR_UNKNOWN ||
+		charCodes[currentChar] == CHAR_LETTER ||
+		charCodes[currentChar] == CHAR_DIGIT){
+		//tokenLength++;
+		readChar();
+	}
 }
 
 Token* readIdentKeyword(void) {
   // TODO
+  Token *token;
+	TokenType keywordType;
+	char str[MAX_IDENT_LEN + 1];
+	int tokenLength = 1;
+	int line, column;
+
+	line = lineNo;
+	column = colNo;
+	str[0] = currentChar;
+	readChar();
+
+	while (charCodes[currentChar] == CHAR_LETTER ||
+				charCodes[currentChar] == CHAR_DIGIT){
+		str[tokenLength++] = currentChar;
+		readChar();
+	}
+	str[tokenLength] = '\0';
+	//if currentChar is CHAR_UNKNOW
+	//read all character in this token
+	//and this token is TK_UNKNOW
+	if (charCodes[currentChar] == CHAR_UNKNOWN){
+		skipTK_NONE();	
+		token = makeToken(TK_NONE, line, column);
+	} else {
+		keywordType = checkKeyword(str);
+		//checkKeyword return TK_NONE means str isn't
+		//a keywork (start with 'KW')
+		if (keywordType == TK_NONE){
+			token = makeToken(TK_IDENT, line , column);
+			strcpy(token->string, str);
+		} else {
+			token = makeToken(keywordType, line , column);
+		}
+	}	
+
+	return token;
 }
 
 Token* readNumber(void) {
   // TODO
+	Token *token;
+	char str[MAX_IDENT_LEN + 1];
+	int tokenLength = 1;
+	int line, column;
+
+	line = lineNo;
+	column = colNo;
+	str[0] = currentChar;
+	readChar();
+	while (charCodes[currentChar] == CHAR_DIGIT){
+		str[tokenLength++] = currentChar;
+		readChar();
+	}
+	str[tokenLength] = '\0';
+
+	//if currentChar is CHAR_UNKNOW
+	//read all character in this token
+	//and this token is TK_UNKNOW
+	if (charCodes[currentChar] == CHAR_UNKNOWN ||
+			charCodes[currentChar] == CHAR_LETTER){
+		skipTK_NONE();	
+		token = makeToken(TK_NONE, line, column);
+	} else {
+		token = makeToken(TK_NUMBER, line, column);
+		strcpy(token->string, str);
+	}
+	return token;
 }
 
 Token* readConstChar(void) {
@@ -43,7 +126,7 @@ Token* readConstChar(void) {
 
 Token* getToken(void) {
   Token *token;
-  int ln, cn;
+  int ln = 0, cn = 0;
 
   if (currentChar == EOF) 
     return makeToken(TK_EOF, lineNo, colNo);
@@ -56,9 +139,78 @@ Token* getToken(void) {
     token = makeToken(SB_PLUS, lineNo, colNo);
     readChar(); 
     return token;
-    // ....
+
     // TODO
-    // ....
+	case CHAR_MINUS: 
+			token = makeToken(SB_MINUS, lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_TIMES:
+			token = makeToken(SB_TIMES, lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_SLASH:
+			token = makeToken(SB_SLASH ,lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_LT:
+			token = makeToken(SB_LT ,lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_GT:
+			token = makeToken(SB_GT ,lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_EXCLAIMATION:
+			token = makeToken(SB_NEQ ,lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_EQ:
+			token = makeToken(SB_EQ ,lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_COMMA:
+			token = makeToken(SB_COMMA ,lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_PERIOD:
+			token = makeToken(SB_PERIOD ,lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_COLON:
+			ln = lineNo;
+			cn = colNo;
+			readChar();
+			if (charCodes[currentChar] == CHAR_EQ){
+				token = makeToken(SB_ASSIGN, ln, cn);
+				readChar();
+			} else {
+				token = makeToken(SB_COLON ,ln, cn);
+			}
+			return token;
+	case CHAR_SEMICOLON:
+			token = makeToken(SB_SEMICOLON, lineNo, colNo);
+			readChar();
+			return token;
+	case CHAR_SINGLEQUOTE:
+			readChar();
+			return token;
+	case CHAR_LPAR:{
+			ln = lineNo;
+			cn = colNo;
+			readChar();
+			if (charCodes[currentChar] == CHAR_TIMES){
+				skipComment();
+				return getToken();
+			} else {
+				return makeToken(SB_LPAR, ln, cn);
+			}}
+	case CHAR_RPAR:
+			token = makeToken(SB_RPAR, lineNo, colNo);
+			readChar();
+			return token;
+
+
   default:
     token = makeToken(TK_NONE, lineNo, colNo);
     error(ERR_INVALIDSYMBOL, lineNo, colNo);
@@ -153,8 +305,7 @@ int main(int argc, char *argv[]) {
   if (scan(argv[1]) == IO_ERROR) {
     printf("Can\'t read input file!\n");
     return -1;
-  }
-    
+  }   
   return 0;
 }
 
