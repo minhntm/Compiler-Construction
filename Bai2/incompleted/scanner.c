@@ -34,6 +34,9 @@ void skipComment() {
 	char2 = charCodes[currentChar];
 	while (char1 != CHAR_TIMES || char2 != CHAR_RPAR){
 		readChar();
+		if (currentChar == EOF){
+			error(ERR_ENDOFCOMMENT, lineNo,colNo);
+		}
 		char1 = char2;
 		char2 = charCodes[currentChar];
 	}
@@ -122,6 +125,27 @@ Token* readNumber(void) {
 
 Token* readConstChar(void) {
   // TODO
+	Token *token;
+	char str[MAX_IDENT_LEN + 1];
+	int tokenLength = 1;
+	int line, column;
+
+	line = lineNo;
+	column = colNo;
+	readChar();
+	str[0] = currentChar;
+	readChar();
+	if (charCodes[currentChar] != CHAR_SINGLEQUOTE){
+		token = makeToken(TK_NONE, line, column);
+		error(ERR_INVALIDCHARCONSTANT, line, column);
+	} else {
+		token = makeToken(TK_CHAR, line, column);
+		str[3] = '\0';
+		strcpy(token->string, str);
+		readChar();
+	}
+
+	return token;
 }
 
 Token* getToken(void) {
@@ -162,8 +186,17 @@ Token* getToken(void) {
 			readChar();
 			return token;
 	case CHAR_EXCLAIMATION:
-			token = makeToken(SB_NEQ ,lineNo, colNo);
+			ln = lineNo;
+			cn = colNo;
 			readChar();
+			if (charCodes[currentChar] == CHAR_EQ){
+				token = makeToken(SB_NEQ, ln, cn);
+				readChar();
+			} else {
+				token = makeToken(TK_NONE, lineNo, colNo);
+				error(ERR_INVALIDSYMBOL, ln, cn);
+				readChar(); 
+			}
 			return token;
 	case CHAR_EQ:
 			token = makeToken(SB_EQ ,lineNo, colNo);
@@ -193,8 +226,7 @@ Token* getToken(void) {
 			readChar();
 			return token;
 	case CHAR_SINGLEQUOTE:
-			readChar();
-			return token;
+			return readConstChar();
 	case CHAR_LPAR:{
 			ln = lineNo;
 			cn = colNo;
