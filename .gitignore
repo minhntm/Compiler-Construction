@@ -4,3 +4,5 @@ scanner
 *~
 *.out
 *.swp
+*.attr
+*.DS_Store
