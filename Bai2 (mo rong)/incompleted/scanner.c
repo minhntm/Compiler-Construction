@@ -127,7 +127,7 @@ Token* readConstChar(void) {
   // TODO
 	Token *token;
 	char str[MAX_IDENT_LEN + 1];
-	int tokenLength = 1;
+	//int tokenLength = 1;
 	int line, column;
 
 	line = lineNo;
@@ -201,8 +201,23 @@ Token* getToken(void) {
 			readChar();
 			return token;
 	case CHAR_SLASH:
-			token = makeToken(SB_SLASH ,lineNo, colNo);
+			ln = lineNo;
+			cn = colNo;
 			readChar();
+			if (charCodes[currentChar] == CHAR_SLASH){
+				readChar();
+				while (currentChar != '\n' &&
+								currentChar != EOF){
+					readChar();
+				}
+				if (currentChar == '\n')
+					token = getToken();
+				else
+					token = makeToken(TK_EOF, ln, cn);
+			} else {
+				token = makeToken(SB_SLASH ,lineNo, colNo);
+			}
+
 			return token;
 	case CHAR_LT:
 			token = makeToken(SB_LT ,lineNo, colNo);
@@ -291,6 +306,7 @@ void printToken(Token *token) {
 	case TK_STRING: printf("TK_STRING(\"%s\")\n", token->string); break;
 	case KW_REPEAT: printf("KW_REPEAT\n"); break;
 	case KW_UNTIL: printf("KW_UNTIL\n"); break;
+	case KW_STRING: printf("KW_STRING\n"); break;
 
   case TK_NONE: printf("TK_NONE\n"); break;
   case TK_IDENT: printf("TK_IDENT(%s)\n", token->string); break;
