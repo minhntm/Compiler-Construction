@@ -1,6 +1,7 @@
 # Object files
 *.o
 scanner
+parser
 *~
 *.out
 *.swp
