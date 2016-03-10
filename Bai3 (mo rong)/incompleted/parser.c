@@ -377,10 +377,28 @@ void compileStatement(void) {
 void compileAssignSt(void) {
   assert("Parsing an assign statement ....");
   // TODO
+	int variablesCounter = 1;
+	int expressionCounter = 0;
+
 	eat(TK_IDENT);
 	compileIndexes();//maybe not run this function
+	while (lookAhead->tokenType == SB_COMMA){
+		eat(SB_COMMA);
+		eat(TK_IDENT);
+		compileIndexes();
+		variablesCounter++;
+	}
 	eat(SB_ASSIGN);
 	compileExpression();
+	expressionCounter++;
+	while (lookAhead->tokenType == SB_COMMA){
+		eat(SB_COMMA);
+		compileExpression();
+		expressionCounter++;
+	}
+	if (expressionCounter != variablesCounter){
+		error(ERR_INVALIDSTATEMENT, lookAhead->lineNo, lookAhead->colNo);
+	}
   assert("Assign statement parsed ....");
 }
 
