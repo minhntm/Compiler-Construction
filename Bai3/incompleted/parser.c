@@ -556,8 +556,6 @@ void compileFactor(void) {
   // TODO
 	switch (lookAhead->tokenType){
 		case TK_NUMBER:
-			eat(TK_NUMBER);
-			break;
 		case TK_CHAR:
 			eat(lookAhead->tokenType);
 			break;
