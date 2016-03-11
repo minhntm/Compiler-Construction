@@ -7,3 +7,8 @@ parser
 *.swp
 *.attr
 *.DS_Store
+*.cbp
+*.layout
+*.*.*
+bin/
+obj/
