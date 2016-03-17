@@ -1,0 +1,23 @@
+Ý tưởng:
+ - Mỗi 1 "định nghĩa kiểu", biến, hằng, hàm, thủ tục, tham số (parameter), chương trình (program)
+	được coi là 1 Object, Object có: -name (tên)
+					 -kind (kiểu)
+					 -thuộc tính (tùy xem nó là kiểu gì 
+						thì có thuộc tính tương tự)
+ - Mỗi Object Attrs, tùy từng Attrs sẽ gồm 1 thuộc tính là scope
+	(scope đc hiểu là 1 phạm vi, ví dụ hàm thì gồm các thứ trong hàm đó...)
+	thuộc tính:
+	- objList: tập các Object trong phạm vi (scope)
+		ví dụ trong hàm sẽ có objList gồm các Object như variable...
+		objList có thể = NULL (ví dụ với biến, scope->objList = NULL)
+		CHÚ Ý: parameter ko nằm trong scope->objList, 
+			nó nằm trong paramList của FunctionAttributes hoặc ProcedureAttributes 
+			(tuy nhiên objList và paramList đều là kiểu ObjectNode, list các Object)
+	- owner: Object sở hữu nó, ví dụ parameter, variable có 1 object function, hay procedure
+		sở hữu nó 
+	- outer: scope bao lấy scope hiện tại
+		ví dụ có 1 scope là scope1 mà scope1->owner = program (scope1 bao tất cả ct)
+		scope2 mà scope2->owner = function 
+		thì scope2->outer = scope1  
+  - Khi tạo bảng sẽ có 1 currentScope để biết mình đang ở đâu của chương trình 
+  - Tóm lại, object thường sẽ gồm 1 scope, scope này gồm các object con trong phạm vi của object bao kia, object to nhất là program

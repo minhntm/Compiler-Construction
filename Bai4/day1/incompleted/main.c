@@ -1,4 +1,4 @@
-/* 
+/*
  * @copyright (c) 2008, Hedspi, Hanoi University of Technology
  * @author Huu-Duc Nguyen
  * @version 1.0
@@ -44,9 +44,9 @@ int main() {
   obj = createFunctionObject("f");
   obj->funcAttrs->returnType = makeIntType();
   declareObject(obj);
-  
+
     enterBlock(obj->funcAttrs->scope);
- 
+
     obj = createParameterObject("p1", PARAM_VALUE, symtab->currentScope->owner);
     obj->paramAttrs->type = makeIntType();
     declareObject(obj);
@@ -59,9 +59,9 @@ int main() {
 
   obj = createProcedureObject("p");
   declareObject(obj);
-  
+
     enterBlock(obj->procAttrs->scope);
- 
+
     obj = createParameterObject("v1", PARAM_VALUE, symtab->currentScope->owner);
     obj->paramAttrs->type = makeIntType();
     declareObject(obj);
@@ -69,7 +69,7 @@ int main() {
     obj = createConstantObject("c1");
     obj->constAttrs->value = makeCharConstant('a');
     declareObject(obj);
-    
+
     obj = createConstantObject("c3");
     obj->constAttrs->value = makeIntConstant(10);
     declareObject(obj);
@@ -96,6 +96,6 @@ int main() {
   exitBlock();
   printObject(symtab->program,0);
   cleanSymTab();
-    
+
   return 0;
 }
