@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1389014814 source:/home/minh/Compiler-Construction/Bai4/day1/incompleted/debug.c
+	<stdio.h>
+	"debug.h"
+
+1389014814 /home/minh/Compiler-Construction/Bai4/day1/incompleted/debug.h
+	"symtab.h"
+
+1389014842 /home/minh/Compiler-Construction/Bai4/day1/incompleted/symtab.h
+
+1458233486 source:/home/minh/Compiler-Construction/Bai4/day1/incompleted/main.c
+	<stdio.h>
+	<stdlib.h>
+	"symtab.h"
+	"debug.h"
+
+1458235586 source:/home/minh/Compiler-Construction/Bai4/day1/incompleted/symtab.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"symtab.h"
+
