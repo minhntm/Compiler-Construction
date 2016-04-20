@@ -1,0 +1,15 @@
+Program Example2; (* Factorial *)
+   
+Var n : Integer;
+s: STRING;
+
+Function F(n : Integer) : Integer;
+  Begin
+    If n = 0 Then F := 1 Else F := N * F (N - 1);
+  End;
+
+Begin
+(*  n := if n>0 then n else if n=0 then 1 else 2;*)
+s:="123";
+	
+End. (* Factorial *)
