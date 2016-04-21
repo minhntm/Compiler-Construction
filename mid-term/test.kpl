@@ -5,15 +5,29 @@ s: STRING;
 f:float;
 A : ARRAY(. 10 .) OF float;
 
+FUNCTION SUM: INTEGER;
+BEGIN
+ SUM:=1;
+END;
+
+
 Begin
-(*  n := if n>0 then n else if n=0 then 1 else 2;*)
-s:="123";
-f:=a(.5.);
-
-repeat
-
-	n:=n+1
-
-until n=5;
+	f := if f>0.0 then f else if f=0.0 then 1.1 else 2.2;
+	s:="123";
+	f:=a(.5.);
+	n:=sum;
+	repeat
+		n:=sum
+	until n=5;
+	
+	repeat
+	begin
+		n:=n+1;
+	end
+	until n=5;
+	
+	repeat
+	until n=5;
+	
 
 End. (* Factorial *)

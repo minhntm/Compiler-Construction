@@ -458,6 +458,9 @@ void compileStatement(void) {
   case SB_SEMICOLON:
   case KW_END:
   case KW_ELSE:
+
+	case KW_UNTIL:
+
     break;
     // Error occurs
   default:
@@ -628,6 +631,9 @@ void compileArguments(ObjectNode* paramList) {
   case KW_END:
   case KW_ELSE:
   case KW_THEN:
+	
+	case KW_UNTIL:
+
     break;
   default:
     error(ERR_INVALID_ARGUMENTS, lookAhead->lineNo, lookAhead->colNo);
