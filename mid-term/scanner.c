@@ -336,12 +336,16 @@ void printToken(Token *token) {
   case TK_EOF: printf("TK_EOF\n"); break;
 	case TK_STRING: printf("TK_STRING(\'%s\')\n", token->string); break;
 
+	case KW_REPEAT: printf("KW_REPEAT\n"); break;
+	case KW_UNTIL: printf("KW_UNTIL\n"); break;
+  case KW_FLOAT: printf("KW_FLOAT\n"); break;
+	case KW_STRING: printf("KW_STRING\n"); break;
+
   case KW_PROGRAM: printf("KW_PROGRAM\n"); break;
   case KW_CONST: printf("KW_CONST\n"); break;
   case KW_TYPE: printf("KW_TYPE\n"); break;
   case KW_VAR: printf("KW_VAR\n"); break;
   case KW_INTEGER: printf("KW_INTEGER\n"); break;
-  case KW_FLOAT: printf("KW_FLOAT\n"); break;
   case KW_CHAR: printf("KW_CHAR\n"); break;
   case KW_ARRAY: printf("KW_ARRAY\n"); break;
   case KW_OF: printf("KW_OF\n"); break;

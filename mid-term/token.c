@@ -72,6 +72,12 @@ char *tokenToString(TokenType tokenType) {
   case TK_CHAR: return "a constant char";
   case TK_EOF: return "end of file";
 
+	case TK_STRING: return "a constant string";
+	case KW_STRING: return "keyword STRING";
+	case KW_REPEAT: return "keyword REPEAT";
+	case KW_UNTIL: return "keyword UNTIL";
+	case KW_FLOAT: return "keyword FLOAT";
+
   case KW_PROGRAM: return "keyword PROGRAM";
   case KW_CONST: return "keyword CONST";
   case KW_TYPE: return "keyword TYPE";

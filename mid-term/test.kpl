@@ -10,4 +10,10 @@ Begin
 s:="123";
 f:=a(.5.);
 
+repeat
+
+	n:=n+1
+
+until n=5;
+
 End. (* Factorial *)
