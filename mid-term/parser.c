@@ -421,6 +421,13 @@ void compileParam(void) {
   }
 }
 
+void compileRepeatSt(void){
+	eat(KW_REPEAT);
+	compileStatement();
+	eat(KW_UNTIL);
+	compileCondition();
+}
+
 void compileStatements(void) {
   compileStatement();
   while (lookAhead->tokenType == SB_SEMICOLON) {
@@ -498,15 +505,44 @@ Type* compileLValue(void) {
 }
 
 void compileAssignSt(void) {
-  Type* varType;
-  Type* expType;
+	Type **lvalueType = NULL;
+	Type *expType = NULL;
 
-  varType = compileLValue();
-  
-  eat(SB_ASSIGN);
-  expType = compileExpression();
+	lvalueType = (Type**)malloc(sizeof(Type));
 
-  checkTypeEquality(varType, expType);
+	int counterForVariables = 1;
+
+	lvalueType = (Type**)realloc(lvalueType, counterForVariables*sizeof(Type));
+	lvalueType[0] = compileLValue();
+	while(lookAhead->tokenType == SB_COMMA){
+		eat(SB_COMMA);
+		if(lookAhead->tokenType != TK_IDENT){
+			error(ERR_VARIABLE,lookAhead->lineNo,lookAhead->colNo);
+		}
+		counterForVariables ++;
+		lvalueType = (Type**)realloc(lvalueType, counterForVariables*sizeof(Type));
+		lvalueType[counterForVariables - 1] = compileLValue();
+	}
+	
+	int counterForExpression = 1;
+	eat(SB_ASSIGN);
+	expType = compileExpression();
+	checkTypeEquality(lvalueType[counterForExpression - 1], expType);
+	while(lookAhead->tokenType == SB_COMMA){
+		eat(SB_COMMA);
+		counterForExpression++;
+		expType = compileExpression();
+		if(lvalueType[counterForExpression - 1] != NULL){
+			checkTypeEquality(lvalueType[counterForExpression - 1], expType);
+		}
+	}
+
+	if(counterForVariables > counterForExpression){
+		error(ERR_MISS_RVALUE, lookAhead->lineNo, lookAhead->colNo);
+	}
+	if(counterForVariables < counterForExpression){
+		error(ERR_MISS_LVALUE, lookAhead->lineNo, lookAhead->colNo);
+	}
 }
 
 void compileCallSt(void) {
@@ -568,12 +604,7 @@ void compileForSt(void) {
   compileStatement();
 }
 
-void compileRepeatSt(void){
-	eat(KW_REPEAT);
-	compileStatement();
-	eat(KW_UNTIL);
-	compileCondition();
-}
+
 
 void compileArgument(Object* param) {
   Type* type;

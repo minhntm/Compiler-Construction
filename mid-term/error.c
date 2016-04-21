@@ -15,9 +15,12 @@ struct ErrorMessage {
   char *message;
 };
 
-struct ErrorMessage errors[30] = {
+struct ErrorMessage errors[34] = {
   {ERR_INVALID_CONSTANT_STRING, "Invalid string constant."},
-
+  {ERR_VARIABLE, "Left site can't have value"},
+  {ERR_MISS_RVALUE, "Missing right value"},
+  {ERR_MISS_LVALUE, "Missing left value"},
+  {ERR_INVALID_FLOAT_VALUE, "Invalid float value"},
 
   {ERR_END_OF_COMMENT, "End of comment expected."},
   {ERR_IDENT_TOO_LONG, "Identifier too long."},
