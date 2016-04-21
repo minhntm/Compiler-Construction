@@ -21,6 +21,12 @@ int readChar(void) {
   return currentChar;
 }
 
+int undoReadChar(int line, int col){
+	lineNo = line;
+	colNo = col;	
+	return fseek(inputStream, -sizeof(char), SEEK_CUR);
+}
+
 int openInputStream(char *fileName) {
   inputStream = fopen(fileName, "rt");
   if (inputStream == NULL)

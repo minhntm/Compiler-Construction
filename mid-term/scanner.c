@@ -81,6 +81,7 @@ Token* readIdentKeyword(void) {
 Token* readNumber(void) {
   Token *token = makeToken(TK_NUMBER, lineNo, colNo);
   int count = 0;
+	token->isIntNumber = 1;
 
   /*------------------------------------------------------*/
   token->string = (char*)malloc(sizeof(char)*15);
@@ -91,8 +92,32 @@ Token* readNumber(void) {
     readChar();
   }
 
+	if (charCodes[currentChar] == CHAR_PERIOD){
+    int line, col;
+    line = lineNo;
+    col = colNo;
+    readChar();
+    if (charCodes[currentChar] == CHAR_DIGIT){
+      token->isIntNumber = 0;
+      token->string[count++] = '.';
+      while ((currentChar != EOF) && (charCodes[currentChar] == CHAR_DIGIT)) {
+        token->string[count++] = (char)currentChar;
+        readChar();
+      }
+    } else {
+      token->isIntNumber = 1;
+      undoReadChar(line, col);
+      currentChar = '.';
+    }
+  }
+
   token->string[count] = '\0';
-  token->value = atoi(token->string);
+  if (token->isIntNumber == 1){
+    token->value = atoi(token->string);
+  } else {
+    token->fValue = atof(token->string);
+  }
+  
   return token;
 }
 
@@ -309,12 +334,14 @@ void printToken(Token *token) {
   case TK_NUMBER: printf("TK_NUMBER(%s)\n", token->string); break;
   case TK_CHAR: printf("TK_CHAR(\'%s\')\n", token->string); break;
   case TK_EOF: printf("TK_EOF\n"); break;
+	case TK_STRING: printf("TK_STRING(\'%s\')\n", token->string); break;
 
   case KW_PROGRAM: printf("KW_PROGRAM\n"); break;
   case KW_CONST: printf("KW_CONST\n"); break;
   case KW_TYPE: printf("KW_TYPE\n"); break;
   case KW_VAR: printf("KW_VAR\n"); break;
   case KW_INTEGER: printf("KW_INTEGER\n"); break;
+  case KW_FLOAT: printf("KW_FLOAT\n"); break;
   case KW_CHAR: printf("KW_CHAR\n"); break;
   case KW_ARRAY: printf("KW_ARRAY\n"); break;
   case KW_OF: printf("KW_OF\n"); break;

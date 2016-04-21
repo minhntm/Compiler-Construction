@@ -19,6 +19,7 @@ Token *lookAhead;
 extern Type* intType;
 extern Type* charType;
 extern Type* stringType;
+extern Type* floatType;
 extern SymTab* symtab;
 
 void scan(void) {
@@ -213,7 +214,11 @@ ConstantValue* compileUnsignedConstant(void) {
 
   case TK_NUMBER:
     eat(TK_NUMBER);
-    constValue = makeIntConstant(currentToken->value);
+    if (currentToken->isIntNumber == 1){
+      constValue = makeIntConstant(currentToken->value);
+    } else {
+      constValue = makeFloatConstant(currentToken->fValue);
+    }
     break;
   case TK_IDENT:
     eat(TK_IDENT);
@@ -244,7 +249,11 @@ ConstantValue* compileConstant(void) {
   case SB_MINUS:
     eat(SB_MINUS);
     constValue = compileConstant2();
-    constValue->intValue = - constValue->intValue;
+    if (constValue->type == TP_INT){
+      constValue->intValue = - constValue->intValue;
+    } else {
+      constValue->floatValue = - constValue->floatValue;
+    }
     break;
   case TK_CHAR:
     eat(TK_CHAR);
@@ -271,15 +280,21 @@ ConstantValue* compileConstant2(void) {
   switch (lookAhead->tokenType) {
   case TK_NUMBER:
     eat(TK_NUMBER);
-    constValue = makeIntConstant(currentToken->value);
+    if (currentToken->isIntNumber == 1){
+      constValue = makeIntConstant(currentToken->value);
+    } else {
+      constValue = makeFloatConstant(currentToken->fValue);
+    }
     break;
   case TK_IDENT:
     eat(TK_IDENT);
     obj = checkDeclaredConstant(currentToken->string);
     if (obj->constAttrs->value->type == TP_INT)
       constValue = duplicateConstantValue(obj->constAttrs->value);
-    else
-      error(ERR_UNDECLARED_INT_CONSTANT,currentToken->lineNo, currentToken->colNo);
+    else if (obj->constAttrs->value->type == TP_FLOAT) {
+      constValue = duplicateConstantValue(obj->constAttrs->value);
+    } else
+      error(ERR_UNDECLARED_CONSTANT,currentToken->lineNo, currentToken->colNo);
     break;
   default:
     error(ERR_INVALID_CONSTANT, lookAhead->lineNo, lookAhead->colNo);
@@ -304,6 +319,10 @@ Type* compileType(void) {
     type = makeCharType();
     break;
 	
+  case KW_FLOAT:
+    eat(KW_FLOAT);
+    type = makeFloatType();
+    break;
 	case KW_STRING:
 		eat(KW_STRING);
 		type = makeStringType();
@@ -349,6 +368,10 @@ Type* compileBasicType(void) {
 		eat(KW_STRING);
 		type = makeStringType();
 		break;
+  case KW_FLOAT:
+    eat(KW_FLOAT);
+    type = makeFloatType();
+    break;
   default:
     error(ERR_INVALID_BASICTYPE, lookAhead->lineNo, lookAhead->colNo);
     break;
@@ -640,12 +663,21 @@ Type* compileExpression(void) {
   case SB_PLUS:
     eat(SB_PLUS);
     type = compileExpression2();
-    checkIntType(type);
+    if (type == intType){
+      checkIntType(type);
+    } else if (type == floatType){
+      checkFloatType(type);
+    }
+    
     break;
   case SB_MINUS:
     eat(SB_MINUS);
     type = compileExpression2();
-    checkIntType(type);
+    if (type == intType){
+      checkIntType(type);
+    } else if (type == floatType){
+      checkFloatType(type);
+    }
     break;
   case KW_IF:
     type = compileIfAssignSt();
@@ -685,13 +717,22 @@ void compileExpression3(void) {
   case SB_PLUS:
     eat(SB_PLUS);
     type = compileTerm();
-    checkIntType(type);
+    if (type == intType){
+      checkIntType(type);
+    } else {
+      checkFloatType(type);
+    }
+    
     compileExpression3();
     break;
   case SB_MINUS:
     eat(SB_MINUS);
     type = compileTerm();
-    checkIntType(type);
+    if (type == intType){
+      checkIntType(type);
+    } else {
+      checkFloatType(type);
+    }
     compileExpression3();
     break;
     // check the FOLLOW set
@@ -732,13 +773,22 @@ void compileTerm2(void) {
   case SB_TIMES:
     eat(SB_TIMES);
     type = compileFactor();
-    checkIntType(type);
+    if (type == intType){
+      checkIntType(type);
+    } else {
+      checkFloatType(type);
+    }
+    
     compileTerm2();
     break;
   case SB_SLASH:
     eat(SB_SLASH);
     type = compileFactor();
-    checkIntType(type);
+    if (type == intType){
+      checkIntType(type);
+    } else {
+      checkFloatType(type);
+    }
     compileTerm2();
     break;
     // check the FOLLOW set
@@ -772,7 +822,12 @@ Type* compileFactor(void) {
   switch (lookAhead->tokenType) {
   case TK_NUMBER:
     eat(TK_NUMBER);
-    type = intType;
+    if (currentToken->isIntNumber == 1){
+      type = intType;
+    } else if (currentToken->isIntNumber == 0){
+      type = floatType;
+    }
+    
     break;
   case TK_CHAR:
     eat(TK_CHAR);
@@ -794,6 +849,9 @@ Type* compileFactor(void) {
       case TP_INT:
 				type = intType;
 				break;
+      case TP_FLOAT:
+        type = floatType;
+        break;
       case TP_CHAR:
 				type = charType;
 				break;

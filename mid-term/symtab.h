@@ -13,7 +13,8 @@ enum TypeClass {
   TP_INT,
   TP_CHAR,
   TP_ARRAY,
-	TP_STRING
+	TP_STRING,
+	TP_FLOAT
 };
 
 enum ObjectKind {
@@ -47,6 +48,7 @@ struct ConstantValue_ {
     int intValue;
     char charValue;
 		char stringValue[200];
+		float floatValue;
   };
 };
 
@@ -141,6 +143,7 @@ Type* makeIntType(void);
 Type* makeCharType(void);
 Type* makeArrayType(int arraySize, Type* elementType);
 Type* makeStringType(void);
+Type* makeFloatType(void);
 
 Type* duplicateType(Type* type);
 int compareType(Type* type1, Type* type2);
@@ -149,6 +152,7 @@ void freeType(Type* type);
 ConstantValue* makeIntConstant(int i);
 ConstantValue* makeCharConstant(char ch);
 ConstantValue* makeStringConstant(char* s);
+ConstantValue* makeFloatConstant(float f);
 ConstantValue* duplicateConstantValue(ConstantValue* v);
 
 Scope* createScope(Object* owner, Scope* outer);

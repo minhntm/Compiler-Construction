@@ -15,6 +15,7 @@ struct {
   {"STRING", KW_STRING},
   {"REPEAT", KW_REPEAT},
   {"UNTIL", KW_UNTIL},
+  {"FLOAT", KW_FLOAT},
 
 
   {"PROGRAM", KW_PROGRAM},
