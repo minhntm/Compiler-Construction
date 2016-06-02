@@ -1,8 +1,0 @@
--Thêm kiểu dữ liệu STRING
--Thêm kiểu dữ liệu FLOAT
--Thêm <Expression> ::= if <Condition> then <Expression> else <Expression>
-	vd x:= if x>=0 then x else -x;
--Thêm câu lệnh repeat ... until
--Thêm lệnh gán đồng thời nhiều biến 
-	x, y, ... , z := <Expression>, <Expression>, ... , <Expression>
-	vd: x, y, z, t := y, z, t, x+y ;

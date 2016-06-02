@@ -1,4 +1,4 @@
-/* 
+/*
  * @copyright (c) 2008, Hedspi, Hanoi University of Technology
  * @author Huu-Duc Nguyen
  * @version 1.0
@@ -19,7 +19,7 @@ Object* checkDeclaredProcedure(char *name);
 Object* checkDeclaredLValueIdent(char *name);
 
 void checkIntType(Type* type);
-void checkFloatType(Type* type);
+void checkDoubleType(Type* type);
 void checkCharType(Type* type);
 void checkStringType(Type* type);
 void checkArrayType(Type* type);

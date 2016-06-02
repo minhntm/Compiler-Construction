@@ -39,4 +39,3 @@ debug.o: debug.c
 
 clean:
 	rm -f *.o *~
-

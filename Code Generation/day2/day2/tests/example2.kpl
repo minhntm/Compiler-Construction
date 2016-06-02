@@ -1,0 +1,13 @@
+Program Example2; 
+   
+Var n : Integer;
+
+Begin
+  n := ReadI;
+  If (n - (n/2) * 2) = 0
+  Then 
+    Call WriteC('E')
+  Else
+    Call WriteC('O');
+  Call WriteLN;
+End. 

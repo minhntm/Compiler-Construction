@@ -1,0 +1,14 @@
+Program Example4; 
+   
+Var n : Integer;
+    i : Integer;
+    S : Integer;
+
+Begin
+  n := ReadI;
+  S := 0;
+  For i:=1 To n Do
+    S := S + i;
+  Call WriteI(S);
+  Call WriteLN;
+End. 

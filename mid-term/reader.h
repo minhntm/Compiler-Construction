@@ -11,7 +11,6 @@
 #define IO_SUCCESS 1
 
 int readChar(void);
-int undoReadChar(int line, int col);
 int openInputStream(char *fileName);
 void closeInputStream(void);
 

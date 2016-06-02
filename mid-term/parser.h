@@ -10,7 +10,6 @@
 
 void scan(void);
 void eat(TokenType tokenType);
-Type* compileIfAssignSt();
 
 void compileProgram(void);
 void compileBlock(void);
@@ -37,6 +36,7 @@ void compileParam(void);
 void compileStatements(void);
 void compileStatement(void);
 Type* compileLValue(void);
+void compileUntilSt(void);
 void compileAssignSt(void);
 void compileCallSt(void);
 void compileGroupSt(void);

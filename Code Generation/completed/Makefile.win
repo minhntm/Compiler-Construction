@@ -1,0 +1,63 @@
+# Project: CodeGen_d3_complete
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = charcode.o codegen.o debug.o error.o instructions.o main.o parser.o reader.o scanner.o semantics.o symtab.o token.o $(RES)
+LINKOBJ  = charcode.o codegen.o debug.o error.o instructions.o main.o parser.o reader.o scanner.o semantics.o symtab.o token.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib"  
+INCS =  -I"C:/Dev-Cpp/include" 
+CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
+BIN  = CodeGen_d3_complete.exe
+CXXFLAGS = $(CXXINCS)  
+CFLAGS = $(INCS)  
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before CodeGen_d3_complete.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "CodeGen_d3_complete.exe" $(LIBS)
+
+charcode.o: charcode.c
+	$(CPP) -c charcode.c -o charcode.o $(CXXFLAGS)
+
+codegen.o: codegen.c
+	$(CPP) -c codegen.c -o codegen.o $(CXXFLAGS)
+
+debug.o: debug.c
+	$(CPP) -c debug.c -o debug.o $(CXXFLAGS)
+
+error.o: error.c
+	$(CPP) -c error.c -o error.o $(CXXFLAGS)
+
+instructions.o: instructions.c
+	$(CPP) -c instructions.c -o instructions.o $(CXXFLAGS)
+
+main.o: main.c
+	$(CPP) -c main.c -o main.o $(CXXFLAGS)
+
+parser.o: parser.c
+	$(CPP) -c parser.c -o parser.o $(CXXFLAGS)
+
+reader.o: reader.c
+	$(CPP) -c reader.c -o reader.o $(CXXFLAGS)
+
+scanner.o: scanner.c
+	$(CPP) -c scanner.c -o scanner.o $(CXXFLAGS)
+
+semantics.o: semantics.c
+	$(CPP) -c semantics.c -o semantics.o $(CXXFLAGS)
+
+symtab.o: symtab.c
+	$(CPP) -c symtab.c -o symtab.o $(CXXFLAGS)
+
+token.o: token.c
+	$(CPP) -c token.c -o token.o $(CXXFLAGS)
