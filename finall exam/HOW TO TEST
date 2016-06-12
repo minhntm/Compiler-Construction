@@ -1,0 +1,7 @@
+compile kplc: make clean && make
+compile interpreter: cd interpreter && gcc -o interpreter main.c instructions.c VM_duongnn.c
+
+make input of interpreter: ./kplc inputKplFile outputfile 
+				./kplc test/fibo.kplc fibo
+run output file with interpreter: ./interpreter outputfile
+				interpreter/interpreter fibo

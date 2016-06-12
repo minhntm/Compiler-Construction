@@ -1,0 +1,13 @@
+Program Swap;
+   
+Var a : Integer;
+	b:Integer;
+
+Begin
+  a:=1;
+  b:=2;
+  a,b:=b,a;
+CALL WRITEI(a);
+CALL WRITELN;
+CALL WRITEI(b);
+End. 

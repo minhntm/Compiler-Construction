@@ -1,0 +1,13 @@
+Program Fibo;
+   
+Var a : Integer;
+
+Function F(n : Integer) : Integer;
+  Begin
+    If n = 0 Then F := 0 Else  If n=1 Then F:=1 Else F := F(N-1) + F (N - 2);
+  End;
+
+Begin
+  a:=3;
+CALL WRITEI(F(a));
+End. 

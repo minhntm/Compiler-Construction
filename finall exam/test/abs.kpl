@@ -1,0 +1,10 @@
+Program Abs;
+   
+Var a : Integer;
+abss:Integer;
+
+Begin
+  a:=-5;
+abss:=if a>0 return a else return -a;
+CALL WRITEI(abss);
+End. 
