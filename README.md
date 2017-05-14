@@ -1,5 +1,5 @@
 # Compiler-Construction
-</b>Exercise in Compiler Construction</b>
+</b>Exercise in Compiler Construction Course</b>
 </br>
 Student: Nguyen Tri Minh
 </br>
