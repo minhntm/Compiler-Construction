@@ -1,8 +1,10 @@
-# Compiler-Construction
-<b>Exercise in Compiler Construction Course</b>
-</br>
-Student: Nguyen Tri Minh
-</br>
-ID: 20132599
-</br>
-Hanoi University of Science and Technology
+# Compiler Construction
+Build Compiler for KPL (Kyoto Programming Language) by C
+
+Steps to build a compiler by yourself:
+- Lexical Analysis
+- Syntax Analysis
+- Semantic Analysis
+- Intermediate code generation (optional)
+- Code optimiser (optional)
+- Code generation
